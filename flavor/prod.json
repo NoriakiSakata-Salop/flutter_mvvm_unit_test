@@ -1,0 +1,5 @@
+{
+  "flavor": "prod",
+  "appName": "flavor_assets_bundle_prod",
+  "appIdSuffix": ".prod"
+}
