@@ -9,7 +9,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../mock_data/dev/user_mock_data.dart';
-import 'mock_api_client.dart';
 import 'user_repository_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<ApiClient>()])
@@ -24,8 +23,8 @@ void main() {
           .thenAnswer((realInvocation) async => UserMockdata.list);
 
       expect(
-        repository.fetchUsers(),
-        [User(id: 1, name: 'test')],
+        await repository.fetchUsers(),
+        [User(id: 1, name: 'Leanne Graham')],
       );
     },
   );
