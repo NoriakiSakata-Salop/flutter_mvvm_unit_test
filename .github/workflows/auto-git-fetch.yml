@@ -1,0 +1,31 @@
+name: Sync Tags
+
+on:
+  schedule:
+    - cron: "* * * * *" # 毎分実行
+
+jobs:
+  sync-tags:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # 全ての履歴を取得
+
+      - name: Set up Git
+        run: |
+          git config user.name "NoriakiSakata-Salop"
+          git config user.email "n.sakata@salop.co.jp"
+
+      - name: Fetch upstream tags
+        run: |
+          git remote add upstream https://github.com/OriginalOwner/OriginalRepo.git
+          git fetch upstream --tags
+
+      - name: Push tags to fork
+        run: |
+          git push origin --tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
