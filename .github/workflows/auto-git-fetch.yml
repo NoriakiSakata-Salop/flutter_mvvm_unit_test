@@ -44,5 +44,5 @@ jobs:
         with:
           payload: |
             {
-              "text": "New tag created: ${!! env.latest_tag}"
+              "text": "IMA SDK IOS ${{ env.latest_tag }} がリリースされました。"
             }
