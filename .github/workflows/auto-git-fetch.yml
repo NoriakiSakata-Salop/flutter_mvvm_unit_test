@@ -23,7 +23,7 @@ jobs:
 
       - name: Fetch upstream tags
         run: |
-          git remote add upstream https://github.com/OriginalOwner/OriginalRepo.git
+          git remote add upstream https://github.com/NoriakiSakata-Salop/flutter_mvvm_unit_test.git
           git fetch upstream --tags
 
       - name: Push tags to fork
