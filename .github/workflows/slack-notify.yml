@@ -1,17 +1,47 @@
-name: Slack Notification on Tag
+name: Notify on New Tag
 
 on:
-  push:
-    tags:
-      - '*'
+  schedule:
+    - cron: "*/1 * * * *" # 毎分実行
+  workflow_dispatch: # 手動トリガー
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send notification to Slack
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Checkout code
+        uses: actions/checkout@v2
         with:
-          args: "New tag created: ${{ github.ref }} in repository ${{ github.repository }}"
+          fetch-depth: 0 # 全てのタグを取得するため
+
+      - name: Set up Git
+        run: |
+          git remote add upstream https://github.com/NoriakiSakata/flutter_mvvm_unit_test.git
+          git fetch upstream --tags
+
+      - name: Check for new tags
+        id: check_tags
+        run: |
+          tags=$(git tag --sort=-v:refname)
+          echo "tags=$tags" >> $GITHUB_ENV
+
+          last_notified_tag=$(cat /tmp/last_notified_tag || echo "")
+
+          new_tag=""
+          for tag in $tags; do
+            if [[ "$tag" != "$last_notified_tag" ]]; then
+              new_tag=$tag
+              break
+            fi
+          done
+
+          echo "new_tag=$new_tag" >> $GITHUB_ENV
+
+      - name: Notify Slack
+        if: env.new_tag != ''
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text": "New tag released: '"${{ env.new_tag }}"'"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Update last notified tag
+        run: |
+          echo "${{ env.new_tag }}" > /tmp/last_notified_tag
