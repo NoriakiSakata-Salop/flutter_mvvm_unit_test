@@ -2,7 +2,7 @@ name: Sync Tags
 
 on:
   schedule:
-    - cron: "* * * * *" # 毎分実行
+    - cron: "*/10 * * * *" # 毎分実行
 
 jobs:
   sync-tags:
