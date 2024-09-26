@@ -41,4 +41,7 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
-          message: "New tag created: ${{ env.latest_tag }} in repository ${{ github.repository }}"
+          payload: |
+            {
+              "text": "New tag created: ${{ env.latest_tag }} in repository ${{ github.repository }}",
+            }
