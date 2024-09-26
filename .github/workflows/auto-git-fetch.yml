@@ -23,6 +23,13 @@ jobs:
           git remote add upstream https://github.com/NoriakiSakata/flutter_mvvm_unit_test.git
           git fetch upstream --tags
 
+      - name: Get latest tag
+        id: get_latest_tag
+        run: |
+          LATEST_TAG=$(git tag --sort=-v:refname | head -n 1)
+          echo "Latest tag is: $LATEST_TAG"
+          echo "::set-output name=latest_tag::$LATEST_TAG"
+
       - name: Push tags to fork
         run: |
           git push origin --tags
@@ -34,4 +41,4 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
-          args: "New tag created: ${{ github.ref }} in repository ${{ github.repository }}"
+          args: "New tag created: ${{ steps.get_latest_tag.outputs.latest_tag }} in repository ${{ github.repository }}"
