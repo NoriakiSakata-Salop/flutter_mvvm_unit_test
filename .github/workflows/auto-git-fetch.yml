@@ -44,5 +44,5 @@ jobs:
         with:
           payload: |
             {
-              "text": "New tag created: ${{ env.latest_tag }} in repository ${{ github.repository }}",
+              "text": "New tag created: ${!! env.latest_tag}"
             }
