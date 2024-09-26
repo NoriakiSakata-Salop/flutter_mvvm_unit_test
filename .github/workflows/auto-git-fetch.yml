@@ -28,7 +28,7 @@ jobs:
         run: |
           LATEST_TAG=$(git tag --sort=-v:refname | head -n 1)
           echo "Latest tag is: $LATEST_TAG"
-          echo "::set-output name=latest_tag::$LATEST_TAG"
+          echo "latest_tag=$LATEST_TAG" >> $GITHUB_ENV
 
       - name: Push tags to fork
         run: |
@@ -41,4 +41,4 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
-          args: "New tag created: ${{ steps.get_latest_tag.outputs.latest_tag }} in repository ${{ github.repository }}"
+          message: "New tag created: ${{ env.latest_tag }} in repository ${{ github.repository }}"
