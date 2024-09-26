@@ -4,6 +4,8 @@ on:
   schedule:
     - cron: "*/10 * * * *" # 毎分実行
 
+  workflow_dispatch:
+
 jobs:
   sync-tags:
     runs-on: ubuntu-latest
