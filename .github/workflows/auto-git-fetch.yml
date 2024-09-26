@@ -1,9 +1,6 @@
 name: Sync Tags
 
 on:
-  schedule:
-    - cron: "*/10 * * * *" # 毎分実行
-
   workflow_dispatch:
 
 jobs:
